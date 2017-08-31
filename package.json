@@ -1,0 +1,25 @@
+{
+  "name": "knex-populate",
+  "version": "0.0.1",
+  "description": "A knex tool that allows you to populate foreign keys from a database.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnazre/knex-populate.git"
+  },
+  "keywords": [
+    "knex",
+    "populate",
+    "knex",
+    "populate"
+  ],
+  "author": "John Armbruster",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/johnazre/knex-populate/issues"
+  },
+  "homepage": "https://github.com/johnazre/knex-populate#readme"
+}
