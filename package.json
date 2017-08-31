@@ -13,8 +13,7 @@
   "keywords": [
     "knex",
     "populate",
-    "knex",
-    "populate"
+    "knexjs"
   ],
   "author": "John Armbruster",
   "license": "MIT",
