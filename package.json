@@ -1,6 +1,6 @@
 {
   "name": "knex-populate",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A knex tool that allows you to populate foreign keys from a database.",
   "main": "index.js",
   "scripts": {
