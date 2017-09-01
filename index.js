@@ -9,7 +9,7 @@ module.exports = function(knex, table_one, table_two, fr_key, alias) {
       ones.forEach(one => {
         one[alias] = [];
         twos.map(two => {
-          if(two[fr_key] === two.id) one[alias].push(two);
+          if(two[fr_key] === one.id) one[alias].push(two);
         });
       });
 
