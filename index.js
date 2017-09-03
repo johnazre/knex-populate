@@ -1,19 +1,43 @@
-module.exports = function(knex, table_one, table_two, fr_key, alias) {
+var KnexQuery = function(knex, main_table) {
+  this.knex = knex;
+  this.main_table = main_table;
+  this.child_tables = [];
+  this.fks = [];
+  this.aliases = [];
+};
+
+KnexQuery.prototype.populate = function (child_table, fk, alias) {
+  this.child_tables.push(child_table);
+  this.fks.push(fk);
+  alias ? this.aliases.push(alias) : this.aliases.push(child_table);
+  return this;
+};
+
+KnexQuery.prototype.exec = function () {
+  var childQueries = this.child_tables.map(table => this.knex(table).select());
   return Promise
     .all([
-      knex(table_one).select(),
-      knex(table_two).select()
+      this.knex(this.main_table).select(),
+      ...childQueries
     ])
     .then(data => {
-      let [ ones, twos ] = data;
-      ones.forEach(one => {
-        one[alias] = [];
-        twos.map(two => {
-          if(two[fr_key] === one.id) one[alias].push(two);
+      let [ main_table_results, ...othertables ] = data;
+      main_table_results.forEach((mtres, mainindex) => {
+        this.fks.map((fk, index) => {
+          mtres[this.aliases[index]] = [];
+          othertables[index].map(item => {
+            console.log('mtres', item);
+            if(item.id === mtres[fk] || item[fk] === mtres.id) {
+              mtres[this.aliases[index]].push(item);
+            }
+          });
         });
       });
-
-      return ones;
+      return main_table_results;
 
     });
+};
+
+module.exports = function(knex, main_table) {
+  return new KnexQuery(knex, main_table);
 };

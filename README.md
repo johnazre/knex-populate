@@ -58,29 +58,19 @@ npm install --save knex-populate
 
 ### Definition
 ```
-populate(
-  knex_instance,
-  parent_table,
-  child_table,
-  foreign_key_in_child_table,
-  alias_for_field_in_resolved_query_object
-)
+knex_populate(knex_instance, main_table)
+  .populate(child_table, foreign_key, [ alias ])
   .then(results => res.send(results));
 ```
 
 ### Usage (in Express):
 ```
 var knex = require('../db/knex');
-var populate = require('knex-populate');
+var knex_populate = require('knex-populate');
 ...
 router.get('/api/posts', function(req, res, next) {
-  populate(
-    knex,
-    'posts',
-    'comments',
-    'post_id',
-    'comments'
-  )
-    .then(posts => res.send(posts));
+  knex_populate(knex, 'posts')
+    .populate('comments', 'post_id', 'comments')
+    .then(results => res.send(results));
 });
 ```
