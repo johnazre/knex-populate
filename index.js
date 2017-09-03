@@ -34,14 +34,15 @@ KnexQuery.prototype.orderBy = function (column, order) {
   return this;
 };
 
-KnexQuery.prototype.finished = function () {
+KnexQuery.prototype.exec = function () {
   let self = this;
   let thequery = this.knex(this.main_table).select();
 
   if(this.limit > 0) thequery = thequery.limit(this.limit);
+  if(this.obcol) thequery = thequery.orderBy(this.obcol, this.oborder);
 
   if(Object.keys(this.query).length < 1) {
-    return thequery;
+    return blah.call(this, thequery);
   } else {
     var keys = Array.from(Object.keys(this.query));
     var vals = keys.map(function(key) {
@@ -53,15 +54,16 @@ KnexQuery.prototype.finished = function () {
 
     if(this.limit > 0) thequery = thequery.limit(this.limit);
 
-    return thequery;
+    return blah.call(this, thequery);
   }
 };
 
-KnexQuery.prototype.exec = function () {
+function blah(query) {
+  console.log('this', this);
   var childQueries = this.child_tables.map(table => this.knex(table).select());
   return Promise
     .all([
-      this.knex(this.main_table).select(),
+      query,
       ...childQueries
     ])
     .then(data => {
