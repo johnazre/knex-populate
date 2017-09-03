@@ -59,9 +59,11 @@ npm install --save knex-populate
 ### Definition
 ```
 knex_populate(knex_instance, main_table)
-  .populate(child_table, foreign_key, [ alias ])
+  .populate(referenced_table, foreign_key, [ alias ])
   .then(results => res.send(results));
 ```
+
+NOTE: You can chain more than one of the `populate` methods together if you have more than one foreign key that you want to populate!
 
 ### Usage (in Express):
 ```
