@@ -59,7 +59,6 @@ KnexQuery.prototype.exec = function () {
 };
 
 function blah(query) {
-  console.log('this', this);
   var childQueries = this.child_tables.map(table => this.knex(table).select());
   return Promise
     .all([
