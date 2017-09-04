@@ -87,19 +87,19 @@ router.get('/api/posts', function(req, res, next) {
     .find()
     .populate('comments', 'post_id', 'comments')
     .limitTo(5)
+    .orderBy('post_title', 'asc')
     .exec()
     .then(results => res.send(results));
 });
 ```
 
-### Chainable methods:
+### Methods:
 
-* `find({})` - **(required as first chained method)** - Takes an argument of an object containing any search criteria. Example: `find({name: "David"})`
-
-* `limitTo(number)` - Takes a number as an argument. Will limit the results to that number of results.
-
-* `orderBy(columnName, order)` - Takes two arguments. First argument is the column to be ordered by and the second argument is either "asc" or "desc".
-
-* `.populate(referenced_table, foreign_key, [ alias ])` - Takes three arguments. First argument is the table to be referenced regarding the foreign key. Second argument is the foreign key in the referenced table. Third argument is optional, but if you want the populated foreign key to be called something specific, you can do that there.
-
-* `exec` - **(required as the last chained method before .then)** Takes no arguments, but is required to execute the query.
+|   Name	        |  Usage 	                                              |   Required/Optional	|  Description 	| Example |
+|---	            |---	                                                  |---	                |---	          |---	|
+|  knex_populate 	|  knex_populate(knex_instance, main_table) 	          |  Required 	        |  Main method 	|  knex_populate(knex, 'posts') 	|
+|  find 	        |  find({}) 	                                          |  Required - first chained method to knex_populate 	|  Takes an argument of an object containing any search criteria. 	|  `find({name: "David"})` 	|
+|  limitTo 	      |  limitTo(number) 	                                    |  Optional 	|  Takes a number as an argument. Will limit the results to that number of results. 	|  `.limitTo(2)`	|
+|  orderBy        |  orderBy(columnName, order) 	                        |  Optional 	|  Takes two arguments. First argument is the column to be ordered by and the second argument is either "asc" or "desc". 	|  `.orderBy('post_title', 'asc')` 	|
+|  populate       |  populate(referenced_table, foreign_key, [ alias ]) 	|  Optional	|  Takes three arguments. First argument is the table to be referenced regarding the foreign key. Second argument is the foreign key in the referenced table. Third argument is optional, but if you want the populated foreign key to be called something specific, you can do that there. 	|   .populate('comments', 'post_id', 'comments')	|
+|  exec           |  exec() 	                                            |  Required - last chained method 	|  Takes no arguments, but is required to execute the query. 	|  `.exec()` 	|
