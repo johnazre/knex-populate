@@ -54,12 +54,24 @@ Comment:
 ```
 npm install --save knex
 npm install --save knex-populate
+
+# Then add one of the following (adding a --save) flag:
+$ npm install pg
+$ npm install sqlite3
+$ npm install mysql
+$ npm install mysql2
+$ npm install mariasql
+$ npm install strong-oracle
+$ npm install oracle
+$ npm install mssql
 ```
 
 ### Definition
 ```
 knex_populate(knex_instance, main_table)
+  .find(object_with_query_params(if any))
   .populate(referenced_table, foreign_key, [ alias ])
+  .exec()
   .then(results => res.send(results));
 ```
 
@@ -72,7 +84,22 @@ var knex_populate = require('knex-populate');
 ...
 router.get('/api/posts', function(req, res, next) {
   knex_populate(knex, 'posts')
+    .find()
     .populate('comments', 'post_id', 'comments')
+    .limitTo(5)
+    .exec()
     .then(results => res.send(results));
 });
 ```
+
+### Chainable methods:
+
+* `find({})` - **(required as first chained method)** - Takes an argument of an object containing any search criteria. Example: `find({name: "David"})`
+
+* `limitTo(number)` - Takes a number as an argument. Will limit the results to that number of results.
+
+* `orderBy(columnName, order)` - Takes two arguments. First argument is the column to be ordered by and the second argument is either "asc" or "desc".
+
+* `.populate(referenced_table, foreign_key, [ alias ])` - Takes three arguments. First argument is the table to be referenced regarding the foreign key. Second argument is the foreign key in the referenced table. Third argument is optional, but if you want the populated foreign key to be called something specific, you can do that there.
+
+* `exec` - **(required as the last chained method before .then)** Takes no arguments, but is required to execute the query.
