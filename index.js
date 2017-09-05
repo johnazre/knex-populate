@@ -13,6 +13,11 @@ KnexQuery.prototype.find = function (query) {
   return this;
 };
 
+KnexQuery.prototype.findById = function (id) {
+  this.query = { id }
+  return this;
+};
+
 KnexQuery.prototype.populate = function (child_table, fk, alias) {
   this.child_tables.push(child_table);
   this.fks.push(fk);
@@ -37,6 +42,7 @@ KnexQuery.prototype.orderBy = function (column, order) {
 KnexQuery.prototype.exec = function () {
   let self = this;
   let thequery = this.knex(this.main_table).select();
+
 
   if(this.limit > 0) thequery = thequery.limit(this.limit);
   if(this.obcol) thequery = thequery.orderBy(this.obcol, this.oborder);
